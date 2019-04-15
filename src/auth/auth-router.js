@@ -10,7 +10,7 @@ authRouter
   .post(jsonBodyParser, async (req, res, next) => {
     const { username, password } = req.body
     const loginUser = { username, password }
-
+    console.log(username, password)
     for (const [key, value] of Object.entries(loginUser))
       if (value == null)
         return res.status(400).json({
@@ -22,7 +22,7 @@ authRouter
         req.app.get('db'),
         loginUser.username
       )
-
+      console.log(dbUser)
       if (!dbUser)
         return res.status(400).json({
           error: 'Incorrect username or password',
@@ -32,7 +32,7 @@ authRouter
         loginUser.password,
         dbUser.password
       )
-
+        console.log(compareMatch)
       if (!compareMatch)
         return res.status(400).json({
           error: 'Incorrect username or password',
@@ -43,10 +43,12 @@ authRouter
         user_id: dbUser.id,
         name: dbUser.name,
       }
+      console.log(payload)
       res.send({
         authToken: AuthService.createJwt(sub, payload),
       })
     } catch (error) {
+      console.log(error)
       next(error)
     }
   })
