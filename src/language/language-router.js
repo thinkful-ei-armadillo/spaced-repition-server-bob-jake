@@ -65,14 +65,6 @@ languageRouter
     }
   });
 
-function display(sll) { 
-  let currNode = sll.head; 
-  while (currNode !== null) { 
-    console.log(currNode.value); 
-    currNode = currNode.next; 
-  } 
-}
-
 languageRouter
   .post('/guess', parser, async (req, res, next) => {
     const guess = req.body.guess;
@@ -81,6 +73,7 @@ languageRouter
         error: `Missing 'guess' in request body`
       });
     }
+
     try {
       const language = await LanguageService.getUsersLanguage(
         req.app.get('db'),
@@ -91,11 +84,6 @@ languageRouter
         req.app.get('db'),
         req.language.id,
       );
-
-      const head = await LanguageService.getHead(
-        req.app.get('db'),
-        req.language.id
-      );
       const list = await LanguageService.createList(
         req.app.get('db'),
         words);
@@ -105,7 +93,6 @@ languageRouter
       let answer = list.head.value.translation;
       let nextWord = tempNode.next.value.original;
       let correct_count = tempNode.next.value.correct_count;
-      let incorrect_count = list.head.value.incorrect_count;
       let memory_value = tempNode.value.memory_value;
 
       if (guess === list.head.value.translation) {
@@ -116,15 +103,12 @@ languageRouter
         tempNode.value.memory_value = memory_value;
         list.head = tempNode.next;
         list.insertAt(tempNode.value, memory_value)
-        // list.remove(list.head.value);
       }
       
       else {
-        // nextWord = original
         isCorrect = false;
         list.head.value.incorrect_count += 1;
         tempNode.value.memory_value = 1;
-        // console.log(tempNode)
         list.head = tempNode.next;
         list.insertAt(tempNode.value, memory_value)
       }
@@ -146,43 +130,14 @@ languageRouter
       }
       updateArray = [...updateArray, loopNode.value]
 
-
-      
       await LanguageService.insertWord(req.app.get('db'), updateArray, language.id, language.total_score);
       
-    
       res.status(200).json(results)
-
-
-
-
-
-      // const compare = await LanguageService.handleGuess(
-      //   req.app.get('db'),
-      //   req.language.id
-      // )
-
-
-      // if(compare.translation === guess){
-      //   res.send('Congrats! You got it right');
-      // } else {
-      //   res.send('Wrong!');
-      // }
       next();
     }
     catch (error) {
       next(error);
     }
   });
-
-
-// const wordList = new LinkedList();
-// nextWord.map(word => wordList.insertLast(word));
-// let currentNode = wordList.head;
-// res.json({
-//   nextWord: currentNode.value.original,
-//   wordCorrectCount: currentNode.value.correct_count,
-//   wordIncorrectCount: currentNode.value.incorrect_count,
-//   totalScore: req.language.total_score
 
 module.exports = languageRouter;

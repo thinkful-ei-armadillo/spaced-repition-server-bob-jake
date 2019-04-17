@@ -10,7 +10,7 @@ const LanguageService = {
         'language.name',
         'language.user_id',
         'language.head',
-        'language.total_score',
+        'language.total_score'
       )
       .where('language.user_id', user_id)
       .first()
@@ -69,30 +69,8 @@ const LanguageService = {
       })
   },
 
-  handleGuess(db, language_id){
-    return db
-      .from('word')
-      .leftJoin('language', 'language.head', 'word.id')
-      .select('*')
-      .where({ language_id });
-  },
-
   createList(db, wordArray){
-    // this.getHead(db, language_id)
-    //   .then(head => wordList
-    //     .insertLast(head));
 
-    // return db 
-    //   .from('word')
-    //   .select('*')
-    //   .where('id', language_head)
-    //   .then(words => {
-    //     const list = new LinkedList();
-    //     words.forEach(word => {
-    //       list.insertLast(word)
-    //     })
-    //     return list;
-    //   })
     const wordList = new LinkedList();
     wordArray.map(word => {
       wordList.insertLast(word)
