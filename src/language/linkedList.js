@@ -1,4 +1,4 @@
-
+'use strict';
 class _Node {
   constructor(value, next){
     this.value = value;
@@ -55,14 +55,16 @@ class LinkedList {
 
   }
 
-  insertAt(item, loc, list){
-    let current = list.head;
-    for (let i = 1; i < loc -1; i++) {
+  insertAt(item, loc){
+    let current = this.head;
+    for (let i = 1; i < loc; i++) {
       current = current.next;
       if(current.next === null){
         this.insertLast(item);
       }
     }
+    item.next = current.next.value.id;
+    current.value.next = item.id;
     current.next = new _Node(item, current.next);
   }
 

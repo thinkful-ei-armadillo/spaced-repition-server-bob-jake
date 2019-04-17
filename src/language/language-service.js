@@ -48,6 +48,27 @@ const LanguageService = {
       .first()
   },
 
+  insertWord(db, words, language_id, total_score) {
+    return db 
+      .transaction(async trx => {
+        return Promise
+          .all([trx('language')
+            .where({id: language_id})
+              .update({total_score, head: words[0].id}),
+              ...words.map((word, index) => {
+                if(index+1 >= words.length) {
+                  word.next = null;
+                }
+                else {
+                  word.next = words[index + 1].id;
+                }
+                return trx('word').where({id: word.id}).update({...word})
+              })
+            ])
+
+      })
+  },
+
   handleGuess(db, language_id){
     return db
       .from('word')
@@ -56,12 +77,26 @@ const LanguageService = {
       .where({ language_id });
   },
 
-  createList(db, language_id){
+  createList(db, wordArray){
+    // this.getHead(db, language_id)
+    //   .then(head => wordList
+    //     .insertLast(head));
+
+    // return db 
+    //   .from('word')
+    //   .select('*')
+    //   .where('id', language_head)
+    //   .then(words => {
+    //     const list = new LinkedList();
+    //     words.forEach(word => {
+    //       list.insertLast(word)
+    //     })
+    //     return list;
+    //   })
     const wordList = new LinkedList();
-    this.getHead(db, language_id)
-      .then(head => wordList
-        .insertLast(head));
-    console.log(wordList);
+    wordArray.map(word => {
+      wordList.insertLast(word)
+    })
     return wordList;
   }
 };
