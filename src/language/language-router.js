@@ -1,7 +1,7 @@
 const express = require('express');
 const LanguageService = require('./language-service');
 const { requireAuth } = require('../middleware/jwt-auth');
-const parser = express.json()
+const parser = express.json();
 
 
 const languageRouter = express.Router();
@@ -55,6 +55,7 @@ languageRouter
 
       res.json({
         nextWord: nextWord.original,
+        translation: nextWord.translation,
         wordCorrectCount: nextWord.correct_count,
         wordIncorrectCount: nextWord.incorrect_count,
         totalScore: req.language.total_score
@@ -70,7 +71,7 @@ languageRouter
     const guess = req.body.guess;
     if (!guess) {
       res.status(400).json({
-        error: `Missing 'guess' in request body`
+        error: 'Missing \'guess\' in request body'
       });
     }
 
@@ -102,7 +103,7 @@ languageRouter
         memory_value *= 2;
         tempNode.value.memory_value = memory_value;
         list.head = tempNode.next;
-        list.insertAt(tempNode.value, memory_value)
+        list.insertAt(tempNode.value, memory_value);
       }
       
       else {
@@ -110,7 +111,7 @@ languageRouter
         list.head.value.incorrect_count += 1;
         tempNode.value.memory_value = 1;
         list.head = tempNode.next;
-        list.insertAt(tempNode.value, memory_value)
+        list.insertAt(tempNode.value, memory_value);
       }
       
       let results = {
@@ -120,19 +121,19 @@ languageRouter
         totalScore: language.total_score,
         wordCorrectCount: correct_count,
         wordIncorrectCount: list.head.value.incorrect_count
-      }
+      };
       
       let updateArray = [];
       let loopNode = list.head;
       while (loopNode.next !== null) {
-        updateArray = [...updateArray, loopNode.value]
+        updateArray = [...updateArray, loopNode.value];
         loopNode = loopNode.next;
       }
-      updateArray = [...updateArray, loopNode.value]
+      updateArray = [...updateArray, loopNode.value];
 
       await LanguageService.insertWord(req.app.get('db'), updateArray, language.id, language.total_score);
       
-      res.status(200).json(results)
+      res.status(200).json(results);
       next();
     }
     catch (error) {
