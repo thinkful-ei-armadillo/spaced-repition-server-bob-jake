@@ -60,14 +60,14 @@ const UserService = {
       const languageWords = [
         ['gracias', 'thank you', 2],
         ['bueno', 'good', 3],
-        ['baños', 'bathrooms', 4],
+        ['bruja', 'witch', 4],
         ['verde', 'green', 5],
-        ['cervesa', 'beer', 6],
+        ['cerveza', 'beer', 6],
         ['dinero', 'money', 7],
         ['gato', 'cat', 8],
         ['perro', 'dog', 9],
-        ['pancho', 'hotdog', 10],
-        ['teléfono', 'telephone', null]
+        ['cuchillo', 'knife', 10],
+        ['feo', 'ugly', null]
       ];
 
       const [languageHeadId] = await trx

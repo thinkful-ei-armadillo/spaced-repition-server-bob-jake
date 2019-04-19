@@ -177,14 +177,14 @@ describe('User Endpoints', function () {
           words: [
             { original: 'gracias', translation: 'thank you' },
             { original: 'bueno', translation: 'good' },
-            { original: 'baños', translation: 'bathrooms' },
+            { original: 'bruja', translation: 'witch' },
             { original: 'verde', translation: 'green' },
-            { original: 'cervesa', translation: 'beer' },
+            { original: 'cerveza', translation: 'beer' },
             { original: 'dinero', translation: 'money' },
             { original: 'gato', translation: 'cat' },
             { original: 'perro', translation: 'dog' },
-            { original: 'pancho', translation: 'hotdog' },
-            { original: 'teléfono', translation: 'telephone' }
+            { original: 'cuchillo', translation: 'knife' },
+            { original: 'feo', translation: 'ugly' }
           ]
         };
         return supertest(app)
