@@ -1,51 +1,29 @@
-# Spaced repetition API!
+# Viva Mexico - A Spaced repetition API!
 
-## Local dev setup
+# Endpoints- 
 
-If using user `dunder-mifflin`:
+### /api/auth/token
+* POST only endpoint
+* This endpoint is for user credetial validation.
+* If validation is passed, it will respond with a JWT Token.
 
-```bash
-mv example.env .env
-createdb -U dunder-mifflin spaced-repetition
-createdb -U dunder-mifflin spaced-repetition-test
-```
+### /api/language
+* GET only endpoint
+* Authorization required
+* This endpoint will fetch the word list based on the user's language ID.
 
-If your `dunder-mifflin` user has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately.
+### /api/language/head
+* GET only endpoint
+* Authorization required
+* This endpoint will fetch the first word in the word list.
 
-```bash
-npm install
-npm run migrate
-env MIGRATION_DB_NAME=spaced-repetition-test npm run migrate
-```
+### /api/language/guess
+* POST only endpoint
+* Authorization required
+* This endpoint will take a user supplied value and compare it to the database's translation value for a specified word.
 
-And `npm test` should work at this point
+### /api/user
+* POST only endpoint
+* Open endpoint
+* This endpoint is only for creating a new user profile with a word list that is unique to the user.
 
-## Configuring Postgres
-
-For tests involving time to run properly, configure your Postgres database to run in the UTC timezone.
-
-1. Locate the `postgresql.conf` file for your Postgres installation.
-   1. E.g. for an OS X, Homebrew install: `/usr/local/var/postgres/postgresql.conf`
-   2. E.g. on Windows, _maybe_: `C:\Program Files\PostgreSQL\11.2\data\postgresql.conf`
-2. Find the `timezone` line and set it to `UTC`:
-
-```conf
-# - Locale and Formatting -
-
-datestyle = 'iso, mdy'
-#intervalstyle = 'postgres'
-timezone = 'UTC'
-#timezone_abbreviations = 'Default'     # Select the set of available time zone
-```
-
-## Scripts
-
-Start the application `npm start`
-
-Start nodemon for the application `npm run dev`
-
-Run the tests mode `npm test`
-
-Run the migrations up `npm run migrate`
-
-Run the migrations down `npm run migrate -- 0`
