@@ -61,7 +61,7 @@ describe('Auth Endpoints', function () {
     it(`responds 400 'invalid username or password' when bad password`, () => {
       const userInvalidPass = { username: testUser.username, password: 'incorrect' }
       return supertest(app)
-        .post('/api/auth/token')
+        .('/api/auth/token')
         .send(userInvalidPass)
         .expect(400, { error: `Incorrect username or password` })
     })
